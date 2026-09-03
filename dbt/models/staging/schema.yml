@@ -67,3 +67,28 @@ models:
       - name: last_visited
         tests:
           - not_null
+
+  - name: stg_ga4_events
+    description: "Flattened GA4 ecommerce and behavioural events; synthetic fixtures are explicitly labelled"
+    columns:
+      - name: event_name
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - page_view
+                - view_item_list
+                - select_item
+                - search
+                - view_item
+                - add_to_cart
+                - view_cart
+                - begin_checkout
+                - purchase
+                - filter_applied
+                - dashboard_interaction
+      - name: event_timestamp
+        tests:
+          - not_null
+      - name: item_id
+        description: "Required for ecommerce item events; nullable for page/search/dashboard events"

@@ -17,3 +17,10 @@ sources:
         description: "Raw review data: ratings (European decimal) and review counts"
       - name: raw_traffic
         description: "Raw traffic log: product page visits with timestamps"
+
+  - name: digital_raw
+    schema: public
+    description: "GA4 ecommerce events exported from BigQuery or an explicitly synthetic local fixture"
+    tables:
+      - name: raw_ga4_events
+        description: "Flattened GA4 event rows; synthetic fixtures must set is_synthetic=true"

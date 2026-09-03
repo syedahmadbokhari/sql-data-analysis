@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Retail Behaviour Demo</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    window.RETAIL_ANALYTICS_CONFIG = __RETAIL_ANALYTICS_CONFIG__;
+    (function loadGtm() {
+      var id = window.RETAIL_ANALYTICS_CONFIG.gtmContainerId;
+      if (!id) return;
+      window.dataLayer.push({"gtm.start": new Date().getTime(), event: "gtm.js"});
+      var firstScript = document.getElementsByTagName("script")[0];
+      var script = document.createElement("script");
+      script.async = true;
+      script.src = "https://www.googletagmanager.com/gtm.js?id=" + encodeURIComponent(id);
+      firstScript.parentNode.insertBefore(script, firstScript);
+    })();
+  </script>
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <p class="eyebrow">Synthetic/demo behaviour tracking</p>
+      <h1>Retail Product Explorer</h1>
+    </div>
+    <div class="status" id="tracking-status">GTM disabled until configured</div>
+  </header>
+
+  <main>
+    <section class="toolbar" aria-label="Product controls">
+      <input id="search" type="search" placeholder="Search products or brands" autocomplete="off">
+      <select id="brand-filter" aria-label="Brand filter">
+        <option value="">All brands</option>
+      </select>
+      <div class="cart-status">Cart items: <span id="cart-count">0</span></div>
+    </section>
+
+    <section class="layout">
+      <div id="product-list" class="product-grid" aria-live="polite"></div>
+      <aside class="detail-panel" id="detail-panel">
+        <p class="muted">Select a product to view details.</p>
+      </aside>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>

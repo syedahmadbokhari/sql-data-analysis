@@ -34,6 +34,41 @@ The same core analysis (revenue by brand, product performance, discount impact, 
 
 ---
 
+## Digital Customer Analytics - GA4 + GTM
+
+This project now includes a small, clearly labelled GA4/GTM retail behaviour demo alongside the existing analytics dashboard. The Streamlit app is an analytics dashboard rather than a normal ecommerce storefront, so the digital analytics layer is implemented as a lightweight product explorer that reuses the same cleaned product catalogue in `data/retailDB.sqlite`.
+
+GTM is loaded only when `GTM_CONTAINER_ID` is set in the environment. The demo pushes structured ecommerce events into `window.dataLayer`, including `view_item_list`, `select_item`, `search`, `view_item`, `add_to_cart`, `begin_checkout`, and the custom `filter_applied` event. `purchase` is documented and modelled, but the demo does not fire it because this repository has no real checkout/payment workflow.
+
+```mermaid
+flowchart TD
+    A[Retail Web Experience] --> B[Google Tag Manager]
+    B --> C[Google Analytics 4]
+    C --> D[BigQuery Event Export]
+    D --> E[SQL / dbt Transformations]
+    E --> F[Digital Analytics Mart]
+    F --> G[Power BI / Reporting]
+```
+
+Status:
+
+- Implemented and locally tested: a lightweight product explorer reading the existing SQLite catalogue, env-driven GTM loading, and `dataLayer` pushes for product list, search, item view, add-to-cart, checkout-intent and filter events.
+- Requires manual configuration: a real GTM Web container, a GA4 Web stream, a Google Tag/GA4 tag in GTM, event tags/triggers, and GTM Preview plus GA4 DebugView validation.
+- Proposed/not yet live: GA4 BigQuery export ingestion and dbt execution against real behavioural event data. The dbt layer currently includes a lightweight staging and funnel model for that future export or an explicitly labelled synthetic fixture; no production traffic or live conversion results are claimed in this repository.
+
+GA4 complements the existing transactional sales analysis by explaining how users reached and interacted with products before commercial outcomes.
+
+Run the tracked demo locally:
+
+```powershell
+$env:GTM_CONTAINER_ID="GTM-XXXXXXX"
+python -m src.digital_analytics.demo_site
+```
+
+Then open `http://127.0.0.1:8502` and use GTM Preview plus GA4 DebugView/Realtime to verify events. See `docs/ga4_tracking_plan.md` for setup and `docs/ga4_interview_story.md` for the portfolio explanation, limitations and CV bullet options.
+
+---
+
 ## What This System Does
 
 Most data projects analyse a static dataset and stop there. This platform simulates what happens in production: sales events arrive continuously, a pipeline wakes up, detects only the new data, processes it, and updates every downstream table — without ever touching data it has already seen.

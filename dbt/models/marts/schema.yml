@@ -16,6 +16,16 @@ models:
         tests:
           - not_null
 
+  - name: fct_digital_funnel
+    description: "Reusable GA4 funnel metrics from product/list view through checkout/purchase when those events exist"
+    columns:
+      - name: event_date
+        tests:
+          - not_null
+      - name: total_sessions
+        tests:
+          - not_null
+
   - name: mart_product_revenue
     description: "Total revenue with rank for every product"
     columns:
